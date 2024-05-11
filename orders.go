@@ -8,9 +8,9 @@ import (
 	"strings"
 )
 
-// GetAllOrders - Returns all user's order
-func (c *Client) GetAllOrders(authToken *string) (*[]Order, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/orders", c.HostURL), nil)
+// GetAllFood - Returns all user's food
+func (c *Client) GetAllFood(authToken *string) (*[]Food, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/food", c.HostURL), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -20,18 +20,18 @@ func (c *Client) GetAllOrders(authToken *string) (*[]Order, error) {
 		return nil, err
 	}
 
-	orders := []Order{}
-	err = json.Unmarshal(body, &orders)
+	food := []Food{}
+	err = json.Unmarshal(body, &food)
 	if err != nil {
 		return nil, err
 	}
 
-	return &orders, nil
+	return &food, nil
 }
 
-// GetOrder - Returns a specifc order
-func (c *Client) GetOrder(orderID string, authToken *string) (*Order, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), nil)
+// GetFood - Returns a specifc food
+func (c *Client) GetFood(foodID string, authToken *string) (*Food, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/food/%s", c.HostURL, foodID), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -41,23 +41,23 @@ func (c *Client) GetOrder(orderID string, authToken *string) (*Order, error) {
 		return nil, err
 	}
 
-	order := Order{}
-	err = json.Unmarshal(body, &order)
+	food := Food{}
+	err = json.Unmarshal(body, &food)
 	if err != nil {
 		return nil, err
 	}
 
-	return &order, nil
+	return &food, nil
 }
 
-// CreateOrder - Create new order
-func (c *Client) CreateOrder(orderItems []OrderItem, authToken *string) (*Order, error) {
-	rb, err := json.Marshal(orderItems)
+// CreateFood - Create new food
+func (c *Client) CreateFood(foodItems []FoodItem, authToken *string) (*Food, error) {
+	rb, err := json.Marshal(foodItems)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/orders", c.HostURL), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/food", c.HostURL), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
@@ -67,23 +67,23 @@ func (c *Client) CreateOrder(orderItems []OrderItem, authToken *string) (*Order,
 		return nil, err
 	}
 
-	order := Order{}
-	err = json.Unmarshal(body, &order)
+	food := Food{}
+	err = json.Unmarshal(body, &food)
 	if err != nil {
 		return nil, err
 	}
 
-	return &order, nil
+	return &food, nil
 }
 
-// UpdateOrder - Updates an order
-func (c *Client) UpdateOrder(orderID string, orderItems []OrderItem, authToken *string) (*Order, error) {
-	rb, err := json.Marshal(orderItems)
+// UpdateFood - Updates an food
+func (c *Client) UpdateFood(foodID string, foodItems []FoodItem, authToken *string) (*Food, error) {
+	rb, err := json.Marshal(foodItems)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/food/%s", c.HostURL, foodID), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
@@ -93,18 +93,18 @@ func (c *Client) UpdateOrder(orderID string, orderItems []OrderItem, authToken *
 		return nil, err
 	}
 
-	order := Order{}
-	err = json.Unmarshal(body, &order)
+	food := Food{}
+	err = json.Unmarshal(body, &food)
 	if err != nil {
 		return nil, err
 	}
 
-	return &order, nil
+	return &food, nil
 }
 
-// DeleteOrder - Deletes an order
-func (c *Client) DeleteOrder(orderID string, authToken *string) error {
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), nil)
+// DeleteFood - Deletes an food
+func (c *Client) DeleteFood(foodID string, authToken *string) error {
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/food/%s", c.HostURL, foodID), nil)
 	if err != nil {
 		return err
 	}
@@ -114,7 +114,7 @@ func (c *Client) DeleteOrder(orderID string, authToken *string) error {
 		return err
 	}
 
-	if string(body) != "Deleted order" {
+	if string(body) != "Deleted food" {
 		return errors.New(string(body))
 	}
 
